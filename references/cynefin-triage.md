@@ -42,7 +42,17 @@ Source: Snowden, Cynefin framework (IBM Systems Journal 2003; HBR 2007). Classif
 
 ## Concurrency auto-trigger
 
-If the diff contains ANY of these tokens/patterns, the Concurrency lens fires regardless of final tier: `mutex`, `lock`, `unlock`, `RwLock`, `atomic`, `Atomic`, `sync.`, `channel`, `Chan`, `select {`, `async`, `await`, `spawn`, `thread::`, `tokio::`, `goroutine`, `go func`, `pthread`, `synchronized`, `volatile`, `Arc<`, `Rc<`, `RefCell`, `Cell`, `unsafe impl Send`, `unsafe impl Sync`, `@synchronized`, `DispatchQueue`, `semaphore`, `condvar`, `notify_`, `wait(`, `CompletableFuture`, `CountDownLatch`, `ConcurrentHashMap`, `par_iter`, `rayon::`.
+If the diff contains ANY token indicating shared-state or concurrent execution, the Concurrency lens fires regardless of final tier. Look for:
+
+- **Locking/synchronization primitives:** mutex, lock, unlock, synchronized, semaphore, monitor, critical section, compare-and-swap, CAS
+- **Atomic operations:** atomic, Atomic, volatile, memory barrier, fence
+- **Thread/task spawning:** thread, spawn, fork, goroutine, Task.Run, ExecutorService, ThreadPool, DispatchQueue, BackgroundWorker
+- **Async patterns:** async, await, Future, Promise, CompletableFuture, Deferred, coroutine, suspend
+- **Channels/queues:** channel, Chan, BlockingQueue, mpsc, broadcast, pubsub, message queue
+- **Shared-state markers:** shared, mutable global, static mut, ConcurrentHashMap, concurrent collection
+- **Coordination:** CountDownLatch, Barrier, WaitGroup, condition variable, notify, wait, signal, select
+
+This is language-agnostic. The presence of ANY of these concepts (regardless of syntax) triggers the lens.
 
 ## Size-based depth adjustment
 
